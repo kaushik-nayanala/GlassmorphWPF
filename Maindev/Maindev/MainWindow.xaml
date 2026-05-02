@@ -1,0 +1,44 @@
+﻿<Window x:Class="Maindev.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Maindev"
+        mc:Ignorable="d"
+     
+        Title="MainWindow" Height="450" Width="800" >
+    <Window.Resources>
+        <local:VisualBrushScaleConverter x:Key="ScaleImageToElement"/>
+        <ControlTemplate TargetType="Label" x:Key="BlurBorder">
+            <Grid>
+                <Border x:Name="BlurElement" Canvas.Left="{TemplateBinding Canvas.Left}" Canvas.Top="{TemplateBinding Canvas.Top}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Border.Effect>
+                        <BlurEffect Radius="5"/>
+                    </Border.Effect>
+                    <Border.Background>
+                        <VisualBrush  Visual="{Binding ElementName=BackgroundImage}" Stretch="Fill">
+                            <VisualBrush.RelativeTransform>
+                                <MultiBinding Converter="{StaticResource ScaleImageToElement }">
+                                    <Binding ElementName="BlurElement" Path="Width"/>
+                                    <Binding ElementName="BlurElement" Path="Height"/>
+                                    <Binding ElementName="BackgroundImage" Path="ActualWidth"/>
+                                    <Binding ElementName="BackgroundImage" Path="ActualHeight"/>
+                                    <Binding ElementName="BlurElement" Path="(Canvas.Left)"/>
+                                    <Binding ElementName="BlurElement" Path="(Canvas.Top)"/>
+                                </MultiBinding>
+                            </VisualBrush.RelativeTransform>
+                        </VisualBrush>
+                    </Border.Background>
+                </Border>
+                <Border  Canvas.Left="{Binding ElementName=BlurElement,Path = (Canvas.Left)}" Canvas.Top="{Binding ElementName=BlurElement,Path = (Canvas.Top)}" Height="{Binding ElementName=BlurElement,Path=ActualHeight}" Width="{Binding ElementName=BlurElement,Path=ActualWidth}" Background="Transparent" BorderBrush="White" BorderThickness="1" Opacity="1" Margin="-.5"/>
+            </Grid>
+        </ControlTemplate>
+    </Window.Resources>
+    <Canvas x:Name="MainCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <Image x:Name="BackgroundImage" Source="/Background/TestBackground.jpg" Stretch="UniformToFill" Height="{Binding ElementName=MainCanvas,Path=ActualHeight}" Width="{Binding ElementName=MainCanvas,Path=ActualWidth}"/>
+        <Label Template="{StaticResource BlurBorder}" Canvas.Left="500" Canvas.Top="100" Height="34" Width="96" />
+        <Label Template="{StaticResource BlurBorder}" Canvas.Left="500" Canvas.Top="150" Height="34" Width="96" />
+        <Label Template="{StaticResource BlurBorder}" Canvas.Left="500" Canvas.Top="200" Height="34" Width="96" />
+        <Label Template="{StaticResource BlurBorder}" Canvas.Left="500" Canvas.Top="250" Height="34" Width="96" />
+    </Canvas>
+</Window>
