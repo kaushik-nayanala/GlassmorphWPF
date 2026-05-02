@@ -21,8 +21,8 @@
                                 <MultiBinding Converter="{StaticResource ScaleImageToElement }">
                                     <Binding ElementName="BlurElement" Path="Width"/>
                                     <Binding ElementName="BlurElement" Path="Height"/>
-                                    <Binding ElementName="BackgroundImage" Path="ActualWidth"/>
-                                    <Binding ElementName="BackgroundImage" Path="ActualHeight"/>
+                                    <Binding ElementName="BackgroundImage" Path="Width"/>
+                                    <Binding ElementName="BackgroundImage" Path="Height"/>
                                     <Binding ElementName="BlurElement" Path="(Canvas.Left)"/>
                                     <Binding ElementName="BlurElement" Path="(Canvas.Top)"/>
                                 </MultiBinding>
