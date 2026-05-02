@@ -9,9 +9,15 @@
         Title="MainWindow" Height="450" Width="800" >
     <Window.Resources>
         <local:VisualBrushScaleConverter x:Key="ScaleImageToElement"/>
+        <local:VisualBrushScaleConverterBorder x:Key="ScaleImageToElementBorder"/>
         <ControlTemplate TargetType="Label" x:Key="BlurBorder">
             <Grid>
-                <Border x:Name="BlurElement" Canvas.Left="{TemplateBinding Canvas.Left}" Canvas.Top="{TemplateBinding Canvas.Top}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Border CornerRadius="{Binding ElementName=BlurElement,Path=CornerRadius}" Canvas.Left="{Binding ElementName=BlurElement,Path = (Canvas.Left)}" Canvas.Top="{Binding ElementName=BlurElement,Path = (Canvas.Top)}" Height="{Binding ElementName=BlurElement,Path=ActualHeight}" Width="{Binding ElementName=BlurElement,Path=ActualWidth}" Background="{Binding ElementName=BlurElement,Path=Background}" BorderThickness="1">
+                    <Border.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="2" Direction="-45"/>
+                    </Border.Effect>
+                </Border>
+                <Border x:Name="BlurElement" CornerRadius="5" Canvas.Left="{TemplateBinding Canvas.Left}" Canvas.Top="{TemplateBinding Canvas.Top}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Border.Effect>
                         <BlurEffect Radius="5"/>
                     </Border.Effect>
@@ -30,7 +36,30 @@
                         </VisualBrush>
                     </Border.Background>
                 </Border>
-                <Border  Canvas.Left="{Binding ElementName=BlurElement,Path = (Canvas.Left)}" Canvas.Top="{Binding ElementName=BlurElement,Path = (Canvas.Top)}" Height="{Binding ElementName=BlurElement,Path=ActualHeight}" Width="{Binding ElementName=BlurElement,Path=ActualWidth}" Background="Transparent" BorderBrush="White" BorderThickness="1" Opacity="1" Margin="-.5"/>
+                <Border CornerRadius="{Binding ElementName=BlurElement,Path=CornerRadius}" Canvas.Left="{Binding ElementName=BlurElement,Path = (Canvas.Left)}" Canvas.Top="{Binding ElementName=BlurElement,Path = (Canvas.Top)}" Height="{Binding ElementName=BlurElement,Path=ActualHeight}" Width="{Binding ElementName=BlurElement,Path=ActualWidth}" Background="Transparent" BorderThickness="1" Margin="-1.5">
+                    <Border.BorderBrush>
+                        <VisualBrush Visual="{Binding ElementName=BackgroundImage}" Stretch="Fill">
+                            <VisualBrush.RelativeTransform>
+                                <MultiBinding Converter="{StaticResource ScaleImageToElementBorder }">
+                                    <Binding ElementName="BlurElement" Path="Width"/>
+                                    <Binding ElementName="BlurElement" Path="Height"/>
+                                    <Binding ElementName="BackgroundImage" Path="Width"/>
+                                    <Binding ElementName="BackgroundImage" Path="Height"/>
+                                    <Binding ElementName="BlurElement" Path="(Canvas.Left)"/>
+                                    <Binding ElementName="BlurElement" Path="(Canvas.Top)"/>
+                                </MultiBinding>
+                            </VisualBrush.RelativeTransform>
+                        </VisualBrush>
+                    </Border.BorderBrush>
+                </Border>
+                <Border Opacity="0.5" CornerRadius="{Binding ElementName=BlurElement,Path=CornerRadius}" Canvas.Left="{Binding ElementName=BlurElement,Path = (Canvas.Left)}" Canvas.Top="{Binding ElementName=BlurElement,Path = (Canvas.Top)}" Height="{Binding ElementName=BlurElement,Path=ActualHeight}" Width="{Binding ElementName=BlurElement,Path=ActualWidth}" Background="Transparent" BorderThickness="1" Margin="-1.5">
+                    <Border.BorderBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.BorderBrush>
+                </Border>
             </Grid>
         </ControlTemplate>
     </Window.Resources>
